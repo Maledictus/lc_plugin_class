@@ -4,6 +4,7 @@ Comment=Basic class for LeechCraft plugin
 Category=C++/LeechCraft
 Language=C++
 Type=Class
+BaseClasses=public QObject,public IInfo
 Files=Header,Implementation
 
 [Header]
