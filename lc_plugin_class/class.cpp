@@ -1,66 +1,46 @@
-{% extends "cpp_implementation.cpp" %}
 {% load kdev_filters %}
+{% block license_header %}
+/**********************************************************************
 
-{% block extra_definitons %}
+  {{ license|lines_prepend:" * " }}
+ **********************************************************************/
 
-{% for method in private_functions %}
-{% with method.arguments as arguments %}
+{% endblock license_header %}
 
-{% include "method_definition_cpp.txt" %}
+{% block includes %}
+#include "{{ output_file_header }}"
+
+{% endblock includes %}
+
+
+{% block namespaces_open %}
+{% for ns in namespaces %}
+namespace {{ ns }}
 {
-	{% if method.type %}
-	return {{ method.default_return_value }};
-	{% endif %}
-}
-
-{% endwith %}
 {% endfor %}
+{% endblock namespaces_open %}
 
-{% endblock extra_definitons %}
+{% block extra_declarations %}
+{% endblock extra_declarations %}
+
+{% block extra_definitions %}
+{% endblock extra_definitions %}
 
 {% block function_definitions %}
-
-{% for method in public_functions %}
+{% for method in functions %}
 {% with method.arguments as arguments %}
 
-{% include "method_definition_cpp.txt" %}
+{% if method.type %}{{ method.type }} {% endif %}{{ name }}::{{ method.name }} ({% include "arguments_types_names.txt" %})
 {
-	{% if method.type %}return {{ method.default_return_value }};
-	{% endif %}
+
+
 }
 
 {% endwith %}
-{% endfor %}
-
-{% for method in protected_functions %}
-{% with method.arguments as arguments %}
-
-{% include "method_definition_cpp.txt" %}
-{
-	{% if method.type %}return {{ method.default_return_value }};
-	{% endif %}
-}
-
-{% endwith %}
-{% endfor %}
-
-{% for property in members %}
-
-{{ property.type }} {{ name }}::{{ property.name }}() const
-{
-	return m_{{ property.name }};
-}
-
-
-void {{ name }}::set{{ property.name|upper_first }}({{ property.type|arg_type }} {{ property.name }})
-{
-	m_{{ property.name }} = {{ property.name }};
-}
-
 {% endfor %}
 
 {% endblock function_definitions %}
 
-{% block bottom %}
-#include "{{ output_file_header|cut:".h"|cut:".hpp" }}.moc"
-{% endblock bottom %}
+{% block namespaces_close %}
+{% include "namespace_close_cpp.txt" %}
+{% endblock namespaces_close %}
