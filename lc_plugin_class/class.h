@@ -49,7 +49,7 @@ class {{ name }}{% if base_classes %} :{% for base in base_classes %} {{ base.in
 
 public:
 {% endif %}
-{% for member in public_members reversed %}
+{% for member in public_members %}
 	{{ member.type }} {{ member.name }};
 {% endfor %}
 

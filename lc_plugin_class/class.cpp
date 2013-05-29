@@ -30,7 +30,11 @@ namespace {{ ns }}
 {% for method in functions %}
 {% with method.arguments as arguments %}
 
-{% if method.type %}{{ method.type }} {% endif %}{{ name }}::{{ method.name }} ({% include "arguments_types_names.txt" %})
+{% if method.isConstructor %}
+{{ name }}::{{ name }}
+{% else %}
+{{ method.returnType|default:"void" }} {{ name }}::{{ method.name }}({% include "arguments_types_names.txt" %}){% if method.isConst %} const{% endif %}
+{% endif %}
 {
 
 
